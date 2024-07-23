@@ -2,6 +2,7 @@ package com.sparta.memo.controller;
 
 import com.sparta.memo.dto.MemoRequestDto;
 import com.sparta.memo.dto.MemoResponseDto;
+import com.sparta.memo.repository.MemoRepository;
 import com.sparta.memo.service.MemoService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -12,16 +13,15 @@ import java.util.List;
 @RequestMapping("/api")
 public class MemoController {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final MemoService memoService;
 
     public MemoController(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.memoService = new MemoService(jdbcTemplate);
     }
 
     @PostMapping("/memos")
     public MemoResponseDto createMemo(@RequestBody MemoRequestDto requestDto) {
         // 객체 간 이동 즉 다른 class의 메서드를 호출하려면 그 클래스를 객체를 만들어야 한다 ➡️ instance화
-        MemoService memoService = new MemoService(jdbcTemplate); //instance화
         return memoService.createMemo(requestDto);
 
     }
@@ -30,20 +30,17 @@ public class MemoController {
     //DB 테이블에서 한 줄 즉 한 row가 자바 객체 하나가 된다.
     @GetMapping("/memos")
     public List<MemoResponseDto> getMemos() {
-        MemoService memoService = new MemoService(jdbcTemplate); //instance화
         return memoService.getMemos();
     }
 
     @PutMapping("/memos/{id}")
     public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto requestDto) {
-        MemoService memoService = new MemoService(jdbcTemplate); //instance화
         return memoService.updateMemo(id,requestDto); // id,수정할 id
 
     }
 
     @DeleteMapping("/memos/{id}")
     public Long deleteMemo(@PathVariable Long id) {
-        MemoService memoService = new MemoService(jdbcTemplate); //instance화
         return memoService.deleteMemo(id);
     }
 

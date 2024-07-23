@@ -9,10 +9,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 public class MemoService {
-    private final JdbcTemplate jdbcTemplate;
+    private final MemoRepository memoRepository;
 
+    //MemoService가 생성자를 통해서 생성이 될 때 memoRepository를 만든다.
+    // 메서드가 호출이 될 때 마다 MemoRepository를 만들 필요가 X
     public MemoService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.memoRepository = new MemoRepository(jdbcTemplate);
     }
 
 
@@ -22,7 +24,6 @@ public class MemoService {
         Memo memo = new Memo(requestDto);
 
         // DB 저장
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         Memo saveMemo = memoRepository.save(memo); // memo클래스 객체 하나 == DB한줄 ❗️ ➡️ 한 줄 저장
 
         // Entity -> ResponseDto
@@ -33,12 +34,10 @@ public class MemoService {
 
     public List<MemoResponseDto> getMemos() {
         //DB 조회
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         return memoRepository.findAll();
     }
 
     public Long updateMemo(Long id, MemoRequestDto requestDto) {
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         // 해당 메모가 DB에 존재하는지 확인
         Memo memo = memoRepository.findById(id);
         if(memo != null) {
@@ -54,7 +53,6 @@ public class MemoService {
 
 
     public Long deleteMemo(Long id) {
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         // 해당 메모가 DB에 존재하는지 확인
         Memo memo = memoRepository.findById(id);
         if(memo != null) {
