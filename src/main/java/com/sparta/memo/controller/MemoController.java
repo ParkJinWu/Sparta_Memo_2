@@ -3,6 +3,7 @@ package com.sparta.memo.controller;
 import com.sparta.memo.dto.MemoRequestDto;
 import com.sparta.memo.dto.MemoResponseDto;
 import com.sparta.memo.service.MemoService;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,19 +11,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class MemoController {
-    // 제어의 흐름
-    // MemoController ➡️ MemoService ➡️ MemoRepository
-    // 즉 강한 결합 (유연하지 못함) : 코드의 변경이 빈번함
 
     private final MemoService memoService;
 
-//    public MemoController(JdbcTemplate jdbcTemplate) {
-//        this.memoService = new MemoService(jdbcTemplate);
-//    }
-
-    //만들어진 MemoService를 외부에서 파라미터로 전달받아서 저장 ➡️ 유연한 결합(재사용 가능)
-    public MemoController(MemoService memoService) {
-        this.memoService = memoService;
+    public MemoController(JdbcTemplate jdbcTemplate) {
+        this.memoService = new MemoService(jdbcTemplate);
     }
 
     @PostMapping("/memos")

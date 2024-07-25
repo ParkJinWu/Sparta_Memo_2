@@ -4,24 +4,18 @@ import com.sparta.memo.dto.MemoRequestDto;
 import com.sparta.memo.dto.MemoResponseDto;
 import com.sparta.memo.entity.Memo;
 import com.sparta.memo.repository.MemoRepository;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-@Service
 public class MemoService {
     private final MemoRepository memoRepository;
+    //private final JdbcTemplate jdbcTemplate;
 
-    //MemoService가 생성자를 통해서 생성이 될 때 memoRepository를 만든다.
-    // 메서드가 호출이 될 때 마다 MemoRepository를 만들 필요가 X
-//    public MemoService(JdbcTemplate jdbcTemplate) {
-//        this.memoRepository = new MemoRepository(jdbcTemplate);
-//    }
-
-    //Controller와 마찬가지로 만들어진 MemoRepository를 전달받아서 저장
-    public MemoService(MemoRepository memoRepository) {
-        this.memoRepository = memoRepository;
+    //method가 호출이 될 때마다 만들지 않기 위해 MemoService가 생성자를 통해서
+    // 생성이 될 때 파라미터로 jdbcTemplate받아오고 memoRepository를 만듦
+    public MemoService(JdbcTemplate jdbcTemplate) {
+        this.memoRepository = new MemoRepository(jdbcTemplate);
     }
 
 
