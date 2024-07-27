@@ -37,7 +37,14 @@ public class MemoService {
 //        return memoRepository.findAll().
 //                stream().
 //                map(MemoResponseDto::new).toList();
-        return memoRepository.findAllByOrderByIdDesc().stream().map(MemoResponseDto :: new).toList();
+        return memoRepository.findAllByOrderByModifiedAtDesc().stream().map(MemoResponseDto :: new).toList();
+    }
+
+    public List<MemoResponseDto> getMemosByKeyword(String keyword) {
+        return memoRepository.findAllByContentsContainsOrderByModifiedAtDesc(keyword).
+                stream().
+                map(MemoResponseDto :: new)
+                .toList();
     }
 
     @Transactional

@@ -10,9 +10,11 @@ import java.util.List;
 public interface MemoRepository extends JpaRepository<Memo, Long> {
 
     //
-    List<Memo> findAllByOrderByIdDesc();
+    List<Memo> findAllByOrderByModifiedAtDesc();
 
     // 파라미터로 받은 username만 가져온다.
     //List<Memo> findAllByUsername(String username);
+
+    List<Memo> findAllByContentsContainsOrderByModifiedAtDesc(String keyword);
 
 }
