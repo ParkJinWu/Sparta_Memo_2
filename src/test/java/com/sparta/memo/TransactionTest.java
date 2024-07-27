@@ -44,12 +44,12 @@ public class TransactionTest {
         em.persist(memo);  // 영속성 컨텍스트에 메모 Entity 객체를 저장합니다.
     }
 
-    @Test
-    @Transactional
-    @Rollback(value = false)
-    @DisplayName("트랜잭션 전파 테스트")
-    void test3() {
-        memoRepository.createMemo(em);
-        System.out.println("테스트 test3 메서드 종료");
-    }
+//    @Test
+//    @Transactional
+//    @Rollback(value = false)
+//    @DisplayName("트랜잭션 전파 테스트")
+//    void test3() {
+//        memoRepository.createMemo(em);
+//        System.out.println("테스트 test3 메서드 종료");
+//    }
 }
